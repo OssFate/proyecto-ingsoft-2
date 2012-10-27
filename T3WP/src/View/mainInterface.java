@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Main;
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -8,7 +9,13 @@ import javax.swing.JFrame;
 
 public class mainInterface extends JFrame{
 
+    private mainCanvas canvas;
+    
     public mainInterface() throws HeadlessException {
+        
+        setSize(1280, 720);
+        
+        addCanvas();
         
         // give App a chance to do clean up before exiting
 	setDefaultCloseOperation( JFrame.DO_NOTHING_ON_CLOSE );
@@ -30,9 +37,18 @@ public class mainInterface extends JFrame{
 	} );
         
     }
+    
+    
+    private void addCanvas()
+    {
+        canvas = new mainCanvas();
+
+	add( canvas, BorderLayout.CENTER );
+    }
 
     public void init() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        assert canvas != null;
+        
+        //canvas.init();
     }
-    
 }

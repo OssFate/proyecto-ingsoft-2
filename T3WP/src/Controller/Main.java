@@ -13,6 +13,12 @@ public class Main {
 	}
 	return m_this;
     }
+
+    public Main() {
+        
+        mInterface = new mainInterface();
+        
+    }
     
     public void run()
     {
@@ -29,6 +35,10 @@ public class Main {
     
     public static void main( String[] args ){
         Main.getInstance().run();
+    }
+
+    public mainInterface getmInterface() {
+        return mInterface;
     }
     
     private static Main m_this;

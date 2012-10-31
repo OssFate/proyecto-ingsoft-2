@@ -1,47 +1,43 @@
 package Controller;
 
-import View.mainInterface;
+import View.gameState;
+import View.magicState;
+import View.menuState;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class Main {
-    
-    // singleton design pattern + lazy initialization
-    public synchronized static Main getInstance()
-    {
-	while ( m_this == null )
-	{
-		m_this = new Main();
-	}
-	return m_this;
-    }
-
-    public Main() {
+public class Main extends StateBasedGame{
+       
+    public static void main( String[] args ) throws SlickException{
+        AppGameContainer app = new AppGameContainer(new Main(gamename));
         
-        mInterface = new mainInterface();
+        app.setDisplayMode(800, 600, false);
+        app.setVSync(true);
+        app.start();
         
     }
     
-    public void run()
-    {
-	mInterface.init();
-	mInterface.setTitle( "T3WP" );
-	mInterface.setSize( 1280 , 720 );
-	mInterface.setVisible( true );
+    public static final String gamename = "T3WP!";
+    public static final int menu = 0;
+    public static final int game = 1;
+    public static final int magic = 2;
+ 
+    public Main(String name) {
+        super(name);
+        this.addState(new menuState(menu));
+        this.addState(new gameState(game));
+        this.addState(new magicState(magic));
     }
-    
-    public void exit()
-    {
-        System.exit( 0 );
+  
+    @Override
+    public void initStatesList(GameContainer gc) throws SlickException {
+        this.getState(menu).init(gc, this);
+        this.getState(game).init(gc, this);
+        this.getState(magic).init(gc, this);
+        this.enterState(menu);
     }
-    
-    public static void main( String[] args ){
-        Main.getInstance().run();
-    }
-
-    public mainInterface getmInterface() {
-        return mInterface;
-    }
-    
-    private static Main m_this;
-    
-    private mainInterface mInterface;
 }

@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package Model.character;
-
 /**
  *
  * @author usuarios
@@ -11,9 +10,11 @@ package Model.character;
 public class Weapon implements Attackable{
     private int normalDamage;
     private int specialDamage;
+    private int range;
     
     public Weapon(){}
 
     public int getNormalDamage() { return normalDamage; }
     public int getSpecialDamage() { return specialDamage; }
+    public int getRange() { return range; }
 }

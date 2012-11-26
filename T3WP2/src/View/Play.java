@@ -14,8 +14,8 @@ public class Play extends BasicGameState{
     float bgY = 0;
     GameCharacter mouse;
     double health;
-    int xMouse = 100;
-    int yMouse = 250;
+    float xMouse = 100;
+    float yMouse = 250;
     int[] duration = {200};
     boolean quit = false;
     Image bg;
@@ -26,7 +26,7 @@ public class Play extends BasicGameState{
     
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-        mouse = new GameCharacter(health);
+        mouse = new GameCharacter(health, xMouse, yMouse);
         bg = new Image("res/Bg1.jpg");
         pause = new Image("res/pause.png");
         Image[] mouse = {new Image("res/mouse.png")};
@@ -36,7 +36,7 @@ public class Play extends BasicGameState{
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(bgX, bgY);
-        anim.draw(xMouse, yMouse);
+        mouse.draw(gc);
         if(quit == true){
             pause.draw(200,200);
             if(quit == false){
@@ -53,9 +53,15 @@ public class Play extends BasicGameState{
         if((input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
                 && bgY > -222) bgY -= delta * .1f;
         if((input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A))
-                && bgX < 144) bgX += delta *.1f;
+                && bgX < 144){ 
+            bgX += delta *.1f;
+            mouse.setFacingRight(false);
+        }
         if((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
-                && bgX > -765) bgX -= delta * .1f;
+                && bgX > -765){ 
+            bgX -= delta * .1f;
+            mouse.setFacingRight(true);
+        }
         if(input.isKeyDown(Input.KEY_ESCAPE)) quit = true;
         
         if(quit == true){

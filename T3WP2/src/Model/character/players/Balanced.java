@@ -11,8 +11,7 @@ import org.newdawn.slick.SlickException;
  *
  * @author usuarios
  */
-public class Balanced extends GameCharacter implements Controllable{
-    public Balanced(double health) throws SlickException {
-        super(health);
+public class Balanced implements Controllable{
+    public Balanced(){
     }
 }

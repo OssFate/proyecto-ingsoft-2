@@ -4,6 +4,7 @@
  */
 package View;
 
+import Model.character.GameCharacter;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
@@ -11,6 +12,8 @@ public class Play extends BasicGameState{
     
     float bgX = 0;
     float bgY = 0;
+    GameCharacter mouse;
+    double health;
     int xMouse = 100;
     int yMouse = 250;
     int[] duration = {200};
@@ -21,13 +24,16 @@ public class Play extends BasicGameState{
     
     public Play(int state) { }
     
+    @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+        mouse = new GameCharacter(health);
         bg = new Image("res/Bg1.jpg");
         pause = new Image("res/pause.png");
         Image[] mouse = {new Image("res/mouse.png")};
         anim = new Animation(mouse, duration, false);
     }
     
+    @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(bgX, bgY);
         anim.draw(xMouse, yMouse);

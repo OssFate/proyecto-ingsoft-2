@@ -4,13 +4,13 @@
  */
 package Model.character.players;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 
 /**
  *
  * @author usuarios
  */
-public class Warrior extends Character implements Controllable{
+public class Warrior implements Controllable{
 
     public Warrior() {
     }

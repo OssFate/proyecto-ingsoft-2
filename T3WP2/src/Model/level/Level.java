@@ -4,7 +4,7 @@
  */
 package Model.level;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 
 /**
  *
@@ -13,8 +13,8 @@ import Model.character.Character;
 public class Level {
     Map map;
     Tower tower;
-    Character[] c;
-    Character[] enemies;
+    GameCharacter[] c;
+    GameCharacter[] enemies;
     Item[] items;
     // Time time;
 

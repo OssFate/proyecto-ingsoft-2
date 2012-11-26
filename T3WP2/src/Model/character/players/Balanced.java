@@ -4,12 +4,15 @@
  */
 package Model.character.players;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
+import org.newdawn.slick.SlickException;
 
 /**
  *
  * @author usuarios
  */
-public class Balanced extends Character implements Controllable{
-    public Balanced() { }
+public class Balanced extends GameCharacter implements Controllable{
+    public Balanced(double health) throws SlickException {
+        super(health);
+    }
 }

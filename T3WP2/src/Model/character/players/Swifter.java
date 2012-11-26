@@ -4,13 +4,13 @@
  */
 package Model.character.players;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 
 /**
  *
  * @author usuarios
  */
-public class Swifter extends Character{
+public class Swifter{
     private boolean isUnlocked;
     public Swifter(){}
     public boolean isUnlocked() { return isUnlocked; }

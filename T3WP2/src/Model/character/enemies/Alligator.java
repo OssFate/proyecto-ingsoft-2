@@ -4,12 +4,12 @@
  */
 package Model.character.enemies;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 /**
  *
  * @author usuarios
  */
-public class Alligator extends Character implements ArtificialIntelligence{
+public class Alligator implements ArtificialIntelligence{
     public Alligator() {
     }
 }

@@ -4,13 +4,13 @@
  */
 package Model.character.enemies;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 
 /**
  *
  * @author usuarios
  */
-public class Rat extends Character implements ArtificialIntelligence{
+public class Rat implements ArtificialIntelligence{
     public Rat() {
     }
 }

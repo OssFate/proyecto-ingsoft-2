@@ -4,12 +4,12 @@
  */
 package Model.character.enemies;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 
 /**
  *
  * @author usuarios
  */
-public class Mongoose extends Character {
+public class Mongoose{
     public Mongoose(){}
 }

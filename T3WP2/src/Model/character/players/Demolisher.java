@@ -4,13 +4,13 @@
  */
 package Model.character.players;
 
-import Model.character.Character;
+import Model.character.GameCharacter;
 
 /**
  *
  * @author usuarios
  */
-public class Demolisher extends Character implements Controllable{
+public class Demolisher implements Controllable{
     public Demolisher() {
     }
 }

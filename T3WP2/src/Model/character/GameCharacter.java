@@ -25,15 +25,17 @@ public class GameCharacter {
     private float x;
     private float y;
     
-    public GameCharacter(double health) throws SlickException{
+    public GameCharacter(double health, float x, float y) throws SlickException{
         this.health = health;
+        this.x = x;
+        this.y = y;
         time = new int[2];
         sprite1 = new Image[2];
         sprite2 = new Image[2];
         sprite1[0]=new Image("res/mouse.png");
         sprite1[1]=sprite1[0];
         sprite2[0]=sprite1[0].getFlippedCopy(true, false);
-        sprite2[3]=sprite2[2];
+        sprite2[1]=sprite2[0];
         time[0]=100;
         time[1]=100;
         left=new Animation(sprite2,time,false);
@@ -57,7 +59,7 @@ public class GameCharacter {
         return y;
     }
 
-    public void setFacing(boolean facing) {
+    public void setFacingRight(boolean facing) {
         this.facingRight = facing;
     }
     
@@ -65,13 +67,13 @@ public class GameCharacter {
         return facingRight;
     }
     
-    public void Draw(GameContainer gc){
+    public void draw(GameContainer gc){
         if(facingRight){
             current = right;
         }else{
             current = left;
         }
-        current.draw();
+        current.draw(x,y);
     }
 
     public double getLife() { return health; }

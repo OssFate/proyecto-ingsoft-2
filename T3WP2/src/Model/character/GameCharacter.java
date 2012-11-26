@@ -5,7 +5,9 @@
 package Model.character;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -15,13 +17,14 @@ import org.newdawn.slick.SlickException;
  */
 public class GameCharacter {
     private double health;
-    private int[] time;
-    private Image[] sprite1;
-    private Image[] sprite2;
+    private Image[] movingRight;
+    private Image[] movingLeft;
     private Animation left;
     private Animation right;
     private Animation current;
-    private boolean facingRight;
+    private Animation idle;
+    private boolean isIdle = true;
+    private boolean facingRight = true;    
     private float x;
     private float y;
     
@@ -29,17 +32,26 @@ public class GameCharacter {
         this.health = health;
         this.x = x;
         this.y = y;
-        time = new int[2];
-        sprite1 = new Image[2];
-        sprite2 = new Image[2];
-        sprite1[0]=new Image("res/mouse.png");
-        sprite1[1]=sprite1[0];
-        sprite2[0]=sprite1[0].getFlippedCopy(true, false);
-        sprite2[1]=sprite2[0];
-        time[0]=100;
-        time[1]=100;
-        left=new Animation(sprite2,time,false);
-        right=new Animation(sprite1,time,false);
+        movingRight = new Image[6];
+        movingLeft = new Image[6];
+        idle = new Animation(new Image[]{new Image("res/ratanimIdle.png")},200);
+        
+        movingRight[0]=new Image("res/ratanimIdle.png");
+        movingRight[1]=new Image("res/ratanimWalk2.png");
+        movingRight[2]=new Image("res/ratanimWalk3.png");
+        movingRight[3]=new Image("res/ratanimWalk4.png");
+        movingRight[4]=new Image("res/ratanimWalk5.png");
+        movingRight[5]=new Image("res/ratanimWalk6.png");
+        
+        movingLeft[0]=movingRight[0].getFlippedCopy(true, false);
+        movingLeft[1]=movingRight[1].getFlippedCopy(true, false);
+        movingLeft[2]=movingRight[2].getFlippedCopy(true, false);
+        movingLeft[3]=movingRight[3].getFlippedCopy(true, false);
+        movingLeft[4]=movingRight[4].getFlippedCopy(true, false);
+        movingLeft[5]=movingRight[5].getFlippedCopy(true, false);
+        
+        left=new Animation(movingLeft,100);
+        right=new Animation(movingRight,100);
         
     }
 
@@ -49,6 +61,10 @@ public class GameCharacter {
 
     public void setY(int y) {
         this.y = y;
+    }
+    
+    public void setIdle(boolean isIdle){
+        this.isIdle=isIdle;
     }
 
     public float getX() {
@@ -68,12 +84,27 @@ public class GameCharacter {
     }
     
     public void draw(GameContainer gc){
-        if(facingRight){
-            current = right;
+        
+        if(isIdle){
+            current = idle;
         }else{
-            current = left;
+            if(facingRight){
+                current = right;
+            }else{
+                current = left;
+            }
         }
         current.draw(x,y);
+        }
+    public void drawHealth(Graphics g){
+        g.setColor(Color.black);
+        g.drawString("Health:", 11, 11);
+        g.drawRect(80, 10, 400, 20);
+        g.setColor(Color.red);
+        float percenthealth = (float) (health/100);
+        g.fillRect(80, 10, 400*percenthealth , 20);
+        g.setColor(Color.white);
+        g.drawString( (int)(percenthealth*100)+"/100", 240, 11);
     }
 
     public double getLife() { return health; }

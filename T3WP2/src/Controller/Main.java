@@ -14,6 +14,7 @@ public class Main {
             appgc = new AppGameContainer(new Game("( ͡° ͜ʖ ͡°)"));
             appgc.setDisplayMode(800, 600, false);
             appgc.setVSync(true);
+            appgc.setShowFPS(false);
             appgc.start();
         } catch(SlickException e){
         }

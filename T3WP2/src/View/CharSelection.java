@@ -4,6 +4,9 @@
  */
 package View;
 
+import Model.character.enemies.Alligator;
+import Model.character.enemies.Mongoose;
+import Model.character.enemies.Pig;
 import Model.character.enemies.Rabbit;
 import Model.character.enemies.Rat;
 import org.lwjgl.input.Mouse;
@@ -54,7 +57,7 @@ public class CharSelection extends BasicGameState{
     }
 
     @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(0, 0);
         rat.draw(15, 50);
         rabbit.draw(205, 50);
@@ -83,7 +86,22 @@ public class CharSelection extends BasicGameState{
                 play.setGameChar(new Rabbit(300,390));
                 sbg.enterState(3);
             }
+            if((mouseX > 465 && mouseX < 715) && (mouseY < 480 && mouseY > 225)){
+                play=(Play) sbg.getState(3);
+                play.setGameChar(new Alligator(200,200));
+                sbg.enterState(3);
+            }
+            if((mouseX > 50 && mouseX < 210) && (mouseY < 355 && mouseY > 185)){
+                play=(Play) sbg.getState(3);
+                play.setGameChar(new Pig(300,370));
+                sbg.enterState(3);
+            }
+            if((mouseX > 250 && mouseX < 420) && (mouseY < 335 && mouseY > 200)){
+                play=(Play) sbg.getState(3);
+                play.setGameChar(new Mongoose(300,380));
+                sbg.enterState(3);
+            }
+            
         }
-        
     }
 }

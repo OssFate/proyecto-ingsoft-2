@@ -5,11 +5,16 @@
 package View;
 
 import Model.character.GameCharacter;
+import Model.character.Observer;
+import Model.character.enemies.*;
+import java.util.ArrayList;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-public class Play extends BasicGameState{
+public class Play extends BasicGameState implements Observable{
     
+    int score = 0;
+    Sound sound;
     float bgX = 0;
     float bgY = 0;
     GameCharacter gameChar;
@@ -18,24 +23,45 @@ public class Play extends BasicGameState{
     float yMouse = 250;
     int[] duration = {200};
     boolean quit = false;
+    boolean playSound=false;
     Image bg;
     Image pause;
     Animation anim;
+    
+    //////////////////////////////
+    ArrayList<Observer> Observers;
+    boolean changed;
+    ArrayList<GameCharacter> enemyList;
     
     public Play(int state) { }
     
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
-        health = 100;
-        bg = new Image("res/Bg2 - resized.jpg");
+        
+        
+        bg = new Image("res/bg2 - resized.png");
         pause = new Image("res/pause.png");
+        sound = new Sound("res/1.wav");
         //Image[] mouse = {new Image("res/mouse.png")};
         //anim = new Animation(mouse, duration, false);
+        
+        ///////////////////////////////////////
+        changed = false;
+        Observers = new ArrayList<Observer>();
+
+	enemyList = new ArrayList<GameCharacter>();
+	///////////////////////////////////////
     }
     
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(bgX, bgY);
+        g.drawString("Score: "+score, 700, 20);
+        
+	for (GameCharacter b : enemyList) {
+            b.draw(gc);
+	}
+        
         gameChar.drawHealth(g);
         gameChar.draw(gc);
         if(quit == true){
@@ -44,45 +70,30 @@ public class Play extends BasicGameState{
                 g.clear();
             }
         }
+        //////////////////////////////////////////////
+	if (changed){
+            notifyObservers(g);
+        }
     }
     
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
+        
+        if(!playSound){
+            sound.play();
+            playSound=true;
+        }
+                
         Input input = gc.getInput();
         gameChar.setIdle(true);
         gameChar.setAttacking(false);
-        if((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
-                && bgY < 170){ 
-            bgY += delta * gameChar.getSpeed();
-            gameChar.setIdle(false);
-        }
-        if((input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
-                && bgY > -222){
-            bgY -= delta * gameChar.getSpeed();           
-            gameChar.setIdle(false);
-        }
-        if((input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A))
-                && bgX < -10){ 
-            bgX += delta *gameChar.getSpeed();
-            gameChar.setFacingRight(false);
-            gameChar.setIdle(false);
-        }
-        if((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
-                && bgX > -1000){ 
-            bgX -= delta * gameChar.getSpeed();
-            gameChar.setFacingRight(true);
-            gameChar.setIdle(false);
-        }
         
-        if (input.isKeyDown(Input.KEY_Z) || input.isMouseButtonDown(0)){
-            gameChar.setIdle(false);
-            gameChar.setAttacking(true);
-        }
-        if (input.isKeyPressed(Input.KEY_Z) || input.isMouseButtonDown(0)) gameChar.getSound().play();
         if(input.isKeyDown(Input.KEY_ESCAPE)) quit = true;
         
         if(quit == true){
             //if(input.isKeyDown(Input.KEY_DOWN) && bgY > -222 && !gameChar.getAttacking()) bgY += delta * gameChar.getSpeed();
             //if(input.isKeyDown(Input.KEY_UP) && bgY < 170 && !gameChar.getAttacking()) bgY -= delta *  gameChar.getSpeed();
+            gameChar.setIdle(true);
+            
             if(input.isKeyDown(Input.KEY_RIGHT) && bgX > -765 && !gameChar.getAttacking()) bgX += delta *  gameChar.getSpeed();
             if(input.isKeyDown(Input.KEY_LEFT) && bgX < 144 && !gameChar.getAttacking()) bgX -= delta * gameChar.getSpeed();
             
@@ -91,15 +102,137 @@ public class Play extends BasicGameState{
                 quit = false;
                 bgX = 0;
                 bgY = 0;
+                score = 0;
+                Observers.clear();
+                enemyList.clear();
+                playSound = false;
+                sound.stop();
                 sbg.enterState(0);
             }
             if(input.isKeyDown(Input.KEY_Q)) System.exit(0);
         }
+        
+        if(!quit){
+        if (input.isKeyDown(Input.KEY_Z) || input.isMouseButtonDown(0)){
+            gameChar.setIdle(false);
+            gameChar.setAttacking(true);
+        }
+        
+        if(((input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) && !gameChar.getAttacking())
+                && bgX < -10){
+            bgX += delta *gameChar.getSpeed();
+            gameChar.setFacingRight(false);
+            gameChar.setIdle(false);
+        }
+        if(((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) && !gameChar.getAttacking())
+                && bgX > -4200){ 
+            bgX -= delta * gameChar.getSpeed();
+            if(bgX < -4200) bgX = 0;
+            gameChar.setFacingRight(true);
+            gameChar.setIdle(false);
+        }
+        
+        if ((input.isKeyPressed(Input.KEY_Z) || input.isMousePressed(0)) && quit==false) gameChar.getSound().play();
+        
+        ///////////////////////////////////////////////////////////////
+	
+        //System.out.println(colision());
+        if(colision()){
+            setChanged(true);
+        }
+
+	if((Math.random()*250) < 1){
+            enemyList.add(Rat.newEnemy(900, 370));
+            enemyList.get(enemyList.size() - 1).setIdle(false);
+            enemyList.get(enemyList.size() - 1).setFacingRight(false);
+            addObserver(enemyList.get(enemyList.size() - 1));
+	}
+        if((Math.random()*250) < 1){
+            enemyList.add(Rabbit.newEnemy(900, 370));
+            enemyList.get(enemyList.size() - 1).setIdle(false);
+            enemyList.get(enemyList.size() - 1).setFacingRight(false);
+            addObserver(enemyList.get(enemyList.size() - 1));
+	}
+        if((Math.random()*400) < 1){
+            enemyList.add(Mongoose.newEnemy(900, 360));
+            enemyList.get(enemyList.size() - 1).setIdle(false);
+            enemyList.get(enemyList.size() - 1).setFacingRight(false);
+            addObserver(enemyList.get(enemyList.size() - 1));
+	}
+        if((Math.random()*400) < 1){
+            enemyList.add(Pig.newEnemy(900, 360));
+            enemyList.get(enemyList.size() - 1).setIdle(false);
+            enemyList.get(enemyList.size() - 1).setFacingRight(false);
+            addObserver(enemyList.get(enemyList.size() - 1));
+	}
+        if((Math.random()*1000) < 1){
+            enemyList.add(Alligator.newEnemy(900, 150));
+            enemyList.get(enemyList.size() - 1).setIdle(false);
+            enemyList.get(enemyList.size() - 1).setFacingRight(false);
+            addObserver(enemyList.get(enemyList.size() - 1));
+	}
+        
+        for (GameCharacter b : enemyList) {
+            b.move(delta);
+        }
+        
+        for(int i = 0; i < enemyList.size(); i++){
+            if(enemyList.get(i).isDestroy()){
+                Observers.remove(Observers.indexOf(enemyList.get(i)));
+                enemyList.remove(i);
+                score++;
+            }
+        }
     }
-    
+    }
     public int getID(){ return 3; }
     
     public void setGameChar(GameCharacter g){
         gameChar=g;
+        addObserver(gameChar);
+        //System.out.println(gameChar);
+    }
+    
+    //////////////////////////////////////////
+    @Override
+    public void addObserver(Observer o) {
+        Observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        int i = Observers.indexOf(o);
+        if (i >= 0){
+            Observers.remove(i);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Graphics g) {
+       for(int i = 0; i < Observers.size(); i++){
+           Observer observer = Observers.get(i);
+           observer.update(gameChar.getAttacking());
+       }
+       setChanged(false);
+    }
+
+    private void setChanged(boolean b) {
+        this.changed = b;
+    }
+
+    
+    private boolean colision() {
+        for(int j = 1; j < Observers.size(); j++){
+            System.out.println(Observers.get(0).getBox().colide(Observers.get(j).getBox()));
+                if(Observers.get(0).getBox().colide(Observers.get(j).getBox())){
+                    Observers.get(0).setColide(true);
+		    Observers.get(j).setColide(true);
+                    return true;
+                }
+                Observers.get(0).setColide(false);
+		Observers.get(j).setColide(false);
+            }
+        
+        return false;
     }
 }

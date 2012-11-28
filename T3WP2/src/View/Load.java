@@ -26,7 +26,6 @@ public class Load extends BasicGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         load.draw(0,0);
-        g.drawString(x + ", " + y, 700, 550);
     }
 
     @Override

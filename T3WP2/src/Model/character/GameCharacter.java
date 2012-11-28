@@ -16,7 +16,7 @@ import org.newdawn.slick.Sound;
  *
  * @author usuarios
  */
-public abstract class GameCharacter {
+public abstract class GameCharacter implements Observer{
     
     protected double health;
     protected double curhealth;
@@ -47,6 +47,12 @@ public abstract class GameCharacter {
     protected float y;
     protected float speed;
     
+    ///////////////////////////////////////////////
+    protected HitBox hitBox;
+    protected boolean colide;
+    
+    protected boolean destroy;
+    
     public GameCharacter(double health, float x, float y) throws SlickException{
         
         this.health = health;
@@ -54,8 +60,13 @@ public abstract class GameCharacter {
         this.x = x;
         this.y = y;
         
-        attackSound = new Sound("res/sword(2).wav");
+        destroy = false;
         
+        attackSound = new Sound("res/sword(2).wav");
+       
+        ///////////////////////////////////////////////
+	//hitBox = new HitBox(x, y, width, height);
+
     }
 
     public void setX(int x) {
@@ -100,31 +111,7 @@ public abstract class GameCharacter {
         return facingRight;
     }
     
-    public void draw(GameContainer gc){
-        
-        if(facingRight){
-            if(isIdle){
-                current=idleRight;
-            }else{
-                if(attacking){
-                    current=aRight;
-                }else{
-                    current=right;
-                }
-            }
-        }else{
-            if(isIdle){
-                current=idleLeft;
-            }else{
-                if(attacking){
-                    current=aLeft;
-                }else{
-                    current=left;
-                }
-            }
-        }
-        current.draw(x,y);
-        }
+    public abstract void draw(GameContainer gc);
     public void drawHealth(Graphics g){
         g.setColor(Color.white);
         g.drawString("Health:", 11, 11);
@@ -137,5 +124,45 @@ public abstract class GameCharacter {
     }
     public float getSpeed(){
         return speed;
+    }
+    
+    ////////////////////////////////////////////////
+    
+    @Override
+    public void update(boolean b) {
+        colision(b);
+    }
+
+    @Override
+    public HitBox getBox() {
+        return this.hitBox;
+    }
+
+    @Override
+    public void setColide(boolean b) {
+        this.colide = b;
+    }
+
+    public void colision(boolean b) {
+        if(colide && b){
+            destroy = true;
+        }
+    }
+
+    public boolean isDestroy() {
+        return destroy;
+    }
+    
+    public void move(int delta){
+        if(facingRight){
+            current = right;
+            x += speed*delta;
+            this.getBox().getHitBox()[0] += speed*delta;
+        }else{
+            current = left;
+            x -= speed*delta;
+            this.getBox().getHitBox()[0] -= speed*delta;
+        }
+        current.draw(x, y);
     }
 }

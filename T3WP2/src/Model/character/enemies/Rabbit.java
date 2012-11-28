@@ -5,7 +5,9 @@
 package Model.character.enemies;
 
 import Model.character.GameCharacter;
+import Model.character.HitBox;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 /**
@@ -14,9 +16,11 @@ import org.newdawn.slick.SlickException;
  */
 public class Rabbit extends GameCharacter{
     public Rabbit(float x, float y) throws SlickException {
-        super(80, x, y);
+        super(85, x, y);
         
-        speed = 0.3f;
+        speed = 0.2f;
+        
+        hitBox = new HitBox((int) (x + 40),(int) y, 10, 180);
         
         movingLeft = new Image[7];
         movingRight = new Image[7];
@@ -59,6 +63,39 @@ public class Rabbit extends GameCharacter{
         right=new Animation(movingRight,60);
         aRight=new Animation(attackRight,50);
         aLeft=new Animation(attackLeft,50);
+        
+        current = left;
     
+    }
+
+    @Override
+    public void draw(GameContainer gc) {
+        if(facingRight){
+            if(isIdle){
+                current=idleRight;
+            }else{
+                if(attacking){
+                    current=aRight;
+                }else{
+                    current=right;
+                }
+            }
+            current.draw(x,y);
+        }else{
+            if(isIdle){
+                current=idleLeft;
+            }else{
+                if(attacking){
+                    current=aLeft;
+                }else{
+                    current=left;
+                }
+            }current.draw(x-50,y);
+        }
+    }
+    
+    ////////////////////////////////////////////////////////////
+    public static GameCharacter newEnemy(int posX, int posY) throws SlickException{
+        return new Rabbit(posX, posY);
     }
 }

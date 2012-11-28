@@ -5,7 +5,9 @@
 package Model.character.enemies;
 
 import Model.character.GameCharacter;
+import Model.character.HitBox;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -16,9 +18,12 @@ import org.newdawn.slick.SlickException;
 public class Rat extends GameCharacter{
 
     public Rat(float x, float y) throws SlickException {
-        super(100, x, y);
+        super(110, x, y);
         
-        speed = 0.2f;
+        hitBox = new HitBox((int) (x + 20),(int) y, 100, 180);
+        
+        
+        speed = 0.15f;
         
         movingRight = new Image[6];
         movingLeft = new Image[6];
@@ -59,6 +64,38 @@ public class Rat extends GameCharacter{
         right=new Animation(movingRight,80);
         aRight=new Animation(attackRight,80);
         aLeft=new Animation(attackLeft,80);
+        
+        current = left;
+    }
+
+    @Override
+    public void draw(GameContainer gc) {
+        if(facingRight){
+            if(isIdle){
+                current=idleRight;
+            }else{
+                if(attacking){
+                    current=aRight;
+                }else{
+                    current=right;
+                }
+            }
+        }else{
+            if(isIdle){
+                current=idleLeft;
+            }else{
+                if(attacking){
+                    current=aLeft;
+                }else{
+                    current=left;
+                }
+            }
+        }
+        current.draw(x,y);
     }
     
+    ////////////////////////////////////////////////////////////
+    public static GameCharacter newEnemy(int posX, int posY) throws SlickException{
+        return new Rat(posX, posY);
+    }
 }

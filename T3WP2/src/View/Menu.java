@@ -21,6 +21,7 @@ public class Menu extends BasicGameState{
         bg = new Image("res/menu.png");
         cursor = new Image("res/cursor.png");
         gc.setMouseCursor(cursor, 0, 0);
+        gc.setFullscreen(true);
     }
     
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {

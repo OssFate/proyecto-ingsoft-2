@@ -34,7 +34,6 @@ public class Create extends BasicGameState{
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(0,0);
         g.setColor(Color.black);
-        g.drawString(nameUser, 295, 275);
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {

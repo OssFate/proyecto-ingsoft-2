@@ -52,15 +52,15 @@ public class GameCharacter {
         attackRight = new Image[5];
         attackLeft = new Image[5];
         
-        idleRight = new Animation(new Image[]{new Image("res/ratanimIdle.png")},200);
-        idleLeft = new Animation(new Image[]{new Image("res/ratanimIdle.png").getFlippedCopy(true, false)},200);
+        idleRight = new Animation(new Image[]{new Image("res/ratAnim/ratanimIdle.png")},200);
+        idleLeft = new Animation(new Image[]{new Image("res/ratAnim/ratanimIdle.png").getFlippedCopy(true, false)},200);
         
-        movingRight[0]=new Image("res/ratanimIdle.png");
-        movingRight[1]=new Image("res/ratanimWalk2.png");
-        movingRight[2]=new Image("res/ratanimWalk3.png");
-        movingRight[3]=new Image("res/ratanimWalk4.png");
-        movingRight[4]=new Image("res/ratanimWalk5.png");
-        movingRight[5]=new Image("res/ratanimWalk6.png");
+        movingRight[0]=new Image("res/ratAnim/ratanimIdle.png");
+        movingRight[1]=new Image("res/ratAnim/ratanimWalk2.png");
+        movingRight[2]=new Image("res/ratAnim/ratanimWalk3.png");
+        movingRight[3]=new Image("res/ratAnim/ratanimWalk4.png");
+        movingRight[4]=new Image("res/ratAnim/ratanimWalk5.png");
+        movingRight[5]=new Image("res/ratAnim/ratanimWalk6.png");
         
         movingLeft[0]=movingRight[0].getFlippedCopy(true, false);
         movingLeft[1]=movingRight[1].getFlippedCopy(true, false);
@@ -69,11 +69,11 @@ public class GameCharacter {
         movingLeft[4]=movingRight[4].getFlippedCopy(true, false);
         movingLeft[5]=movingRight[5].getFlippedCopy(true, false);
         
-        attackRight[0]=new Image("res/ratanimIdle.png");
-        attackRight[1]=new Image("res/ratanimAttack2.png");
-        attackRight[2]=new Image("res/ratanimAttack3.png");
-        attackRight[3]=new Image("res/ratanimAttack4.png");
-        attackRight[4]=new Image("res/ratanimAttack5.png");
+        attackRight[0]=new Image("res/ratAnim/ratanimIdle.png");
+        attackRight[1]=new Image("res/ratAnim/ratanimAttack2.png");
+        attackRight[2]=new Image("res/ratAnim/ratanimAttack3.png");
+        attackRight[3]=new Image("res/ratAnim/ratanimAttack4.png");
+        attackRight[4]=new Image("res/ratAnim/ratanimAttack5.png");
         
         attackLeft[0]=attackRight[0].getFlippedCopy(true, false);
         attackLeft[1]=attackRight[1].getFlippedCopy(true, false);

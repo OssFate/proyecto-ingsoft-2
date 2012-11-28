@@ -50,6 +50,7 @@ public class Play extends BasicGameState{
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
         Input input = gc.getInput();
         mouse.setIdle(true);
+        mouse.setAttacking(false);
         if((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
                 && bgY < 170){ 
             bgY += delta * .1f;
@@ -72,6 +73,12 @@ public class Play extends BasicGameState{
             mouse.setFacingRight(true);
             mouse.setIdle(false);
         }
+        
+        if (input.isKeyDown(Input.KEY_Z)){
+            mouse.setIdle(false);
+            mouse.setAttacking(true);
+        }
+        
         if(input.isKeyDown(Input.KEY_ESCAPE)) quit = true;
         
         if(quit == true){

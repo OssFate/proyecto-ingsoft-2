@@ -17,14 +17,27 @@ import org.newdawn.slick.SlickException;
  */
 public class GameCharacter {
     private double health;
+    
     private Image[] movingRight;
     private Image[] movingLeft;
+    private Image[] attackRight;
+    private Image[] attackLeft;
+    
+    private Animation current;
+    
     private Animation left;
     private Animation right;
-    private Animation current;
-    private Animation idle;
+    
+    private Animation idleRight;
+    private Animation idleLeft;
+    
+    private Animation aRight;
+    private Animation aLeft;
+    
     private boolean isIdle = true;
     private boolean facingRight = true;    
+    private boolean attacking = false;
+    
     private float x;
     private float y;
     
@@ -32,9 +45,15 @@ public class GameCharacter {
         this.health = health;
         this.x = x;
         this.y = y;
+        
         movingRight = new Image[6];
         movingLeft = new Image[6];
-        idle = new Animation(new Image[]{new Image("res/ratanimIdle.png")},200);
+        
+        attackRight = new Image[5];
+        attackLeft = new Image[5];
+        
+        idleRight = new Animation(new Image[]{new Image("res/ratanimIdle.png")},200);
+        idleLeft = new Animation(new Image[]{new Image("res/ratanimIdle.png").getFlippedCopy(true, false)},200);
         
         movingRight[0]=new Image("res/ratanimIdle.png");
         movingRight[1]=new Image("res/ratanimWalk2.png");
@@ -50,8 +69,22 @@ public class GameCharacter {
         movingLeft[4]=movingRight[4].getFlippedCopy(true, false);
         movingLeft[5]=movingRight[5].getFlippedCopy(true, false);
         
-        left=new Animation(movingLeft,100);
-        right=new Animation(movingRight,100);
+        attackRight[0]=new Image("res/ratanimIdle.png");
+        attackRight[1]=new Image("res/ratanimAttack2.png");
+        attackRight[2]=new Image("res/ratanimAttack3.png");
+        attackRight[3]=new Image("res/ratanimAttack4.png");
+        attackRight[4]=new Image("res/ratanimAttack5.png");
+        
+        attackLeft[0]=attackRight[0].getFlippedCopy(true, false);
+        attackLeft[1]=attackRight[1].getFlippedCopy(true, false);
+        attackLeft[2]=attackRight[2].getFlippedCopy(true, false);
+        attackLeft[3]=attackRight[3].getFlippedCopy(true, false);
+        attackLeft[4]=attackRight[4].getFlippedCopy(true, false);
+        
+        left=new Animation(movingLeft,80);
+        right=new Animation(movingRight,80);
+        aRight=new Animation(attackRight,80);
+        aLeft=new Animation(attackLeft,80);
         
     }
 
@@ -65,6 +98,10 @@ public class GameCharacter {
     
     public void setIdle(boolean isIdle){
         this.isIdle=isIdle;
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 
     public float getX() {
@@ -85,13 +122,25 @@ public class GameCharacter {
     
     public void draw(GameContainer gc){
         
-        if(isIdle){
-            current = idle;
-        }else{
-            if(facingRight){
-                current = right;
+        if(facingRight){
+            if(isIdle){
+                current=idleRight;
             }else{
-                current = left;
+                if(attacking){
+                    current=aRight;
+                }else{
+                    current=right;
+                }
+            }
+        }else{
+            if(isIdle){
+                current=idleLeft;
+            }else{
+                if(attacking){
+                    current=aLeft;
+                }else{
+                    current=left;
+                }
             }
         }
         current.draw(x,y);

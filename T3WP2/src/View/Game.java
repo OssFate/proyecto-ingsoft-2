@@ -14,6 +14,7 @@ public class Game extends StateBasedGame{
     public static final int create = 2;
     public static final int play = 3;
     public static final int cred = 4;
+    public static final int charsel = 7;
     
     public Game(String gameName) {
         super(gameName);
@@ -22,6 +23,7 @@ public class Game extends StateBasedGame{
         this.addState(new Create(create));
         this.addState(new Play(play));
         this.addState(new Credits(cred));
+        this.addState(new CharSelection(charsel));
     }
     
     @Override
@@ -31,6 +33,7 @@ public class Game extends StateBasedGame{
         this.getState(create).init(gc, this);
         this.getState(play).init(gc, this);
         this.getState(cred).init(gc, this);
+        this.getState(charsel).init(gc, this);
         this.enterState(menu);
     }
 }

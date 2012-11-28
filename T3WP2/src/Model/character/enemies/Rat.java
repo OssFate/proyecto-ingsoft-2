@@ -15,8 +15,10 @@ import org.newdawn.slick.SlickException;
  */
 public class Rat extends GameCharacter{
 
-    public Rat(double health, float x, float y) throws SlickException {
-        super(health, x, y);
+    public Rat(float x, float y) throws SlickException {
+        super(100, x, y);
+        
+        speed = 0.2f;
         
         movingRight = new Image[6];
         movingLeft = new Image[6];

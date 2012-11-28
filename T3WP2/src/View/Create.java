@@ -21,7 +21,7 @@ public class Create extends BasicGameState{
     int current;
     int x, y;
     Image bg;
-    String nameUser = "default";
+    String nameUser = "";
     UnicodeFont ufont;
     
     Create(int state) { }
@@ -55,7 +55,7 @@ public class Create extends BasicGameState{
                 
             } catch (IOException ex) {
                 Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
-            }*/sbg.enterState(3);
+            }*/sbg.enterState(7);
         }
         if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isMouseButtonDown(0)
                 && (x > 550 && x < 750) && (y > 45 && y < 90)) sbg.enterState(0);
@@ -64,8 +64,11 @@ public class Create extends BasicGameState{
     public int getID() { return 2; }
     
     public void keyPressed(int key, char c){
-        if(key != -1) nameUser += c;
-        if(key == Input.KEY_BACK || key == Input.KEY_DELETE)
-            nameUser = nameUser.substring(0, nameUser.length()-2);
+        if(key != -1 && nameUser.length()<9) nameUser += c;
+        if(key == Input.KEY_BACK || key == Input.KEY_DELETE){
+            if(nameUser.length()!=1){
+                nameUser = nameUser.substring(0, nameUser.length()-2);
+            }
+        }
     }
 }

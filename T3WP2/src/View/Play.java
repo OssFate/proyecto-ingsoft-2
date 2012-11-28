@@ -27,7 +27,7 @@ public class Play extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         health = 100;
-        bg = new Image("res/Bg1.jpg");
+        bg = new Image("res/Bg2 - resized.jpg");
         pause = new Image("res/pause.png");
         //Image[] mouse = {new Image("res/mouse.png")};
         //anim = new Animation(mouse, duration, false);
@@ -52,23 +52,23 @@ public class Play extends BasicGameState{
         gameChar.setAttacking(false);
         if((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
                 && bgY < 170){ 
-            bgY += delta * .1f;
+            bgY += delta * gameChar.getSpeed();
             gameChar.setIdle(false);
         }
         if((input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
                 && bgY > -222){
-            bgY -= delta * .1f;           
+            bgY -= delta * gameChar.getSpeed();           
             gameChar.setIdle(false);
         }
         if((input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A))
-                && bgX < 144){ 
-            bgX += delta *.1f;
+                && bgX < -10){ 
+            bgX += delta *gameChar.getSpeed();
             gameChar.setFacingRight(false);
             gameChar.setIdle(false);
         }
         if((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
-                && bgX > -765){ 
-            bgX -= delta * .1f;
+                && bgX > -1000){ 
+            bgX -= delta * gameChar.getSpeed();
             gameChar.setFacingRight(true);
             gameChar.setIdle(false);
         }
@@ -77,14 +77,14 @@ public class Play extends BasicGameState{
             gameChar.setIdle(false);
             gameChar.setAttacking(true);
         }
-        
+        if (input.isKeyPressed(Input.KEY_Z) || input.isMouseButtonDown(0)) gameChar.getSound().play();
         if(input.isKeyDown(Input.KEY_ESCAPE)) quit = true;
         
         if(quit == true){
-            if(input.isKeyDown(Input.KEY_DOWN) && bgY > -222) bgY += delta * .1f;
-            if(input.isKeyDown(Input.KEY_UP) && bgY < 170) bgY -= delta * .1f;
-            if(input.isKeyDown(Input.KEY_RIGHT) && bgX > -765) bgX += delta * .1f;
-            if(input.isKeyDown(Input.KEY_LEFT) && bgX < 144) bgX -= delta *.1f;
+            //if(input.isKeyDown(Input.KEY_DOWN) && bgY > -222 && !gameChar.getAttacking()) bgY += delta * gameChar.getSpeed();
+            //if(input.isKeyDown(Input.KEY_UP) && bgY < 170 && !gameChar.getAttacking()) bgY -= delta *  gameChar.getSpeed();
+            if(input.isKeyDown(Input.KEY_RIGHT) && bgX > -765 && !gameChar.getAttacking()) bgX += delta *  gameChar.getSpeed();
+            if(input.isKeyDown(Input.KEY_LEFT) && bgX < 144 && !gameChar.getAttacking()) bgX -= delta * gameChar.getSpeed();
             
             if(input.isKeyDown(Input.KEY_R)) quit = false;
             if(input.isKeyDown(Input.KEY_M)){

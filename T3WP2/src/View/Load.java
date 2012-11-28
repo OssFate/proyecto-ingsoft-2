@@ -40,11 +40,10 @@ public class Load extends BasicGameState {
                 && currentUsers < 10) sbg.enterState(2);
         if(input.isMouseButtonDown(0) && (x > 325 && x < 525) && (y > 40 && y < 85)
                 && (currentUsers < 10 && currentUsers > 0)){
-            
         } 
         if(input.isMouseButtonDown(0) && (x > 550 && x < 750) && (y > 115 && y < 160)
                 && currentUsers < 10){
-            sbg.enterState(3);
+            sbg.enterState(7);
         } 
         if(input.isMouseButtonDown(0) && (x > 550 && x < 750) && (y > 45 && y < 90)) sbg.enterState(0);
     }

@@ -4,6 +4,7 @@
  */
 package View;
 
+import java.io.File;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
@@ -11,6 +12,9 @@ import org.newdawn.slick.state.*;
 public class Load extends BasicGameState {
     Image load;
     int x, y;
+    File[] user;
+    int maxUsers = 10;
+    int currentUsers;
     
     public Load(int load) { }
 
@@ -22,6 +26,7 @@ public class Load extends BasicGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         load.draw(0,0);
+        g.drawString(x + ", " + y, 700, 550);
     }
 
     @Override
@@ -31,9 +36,20 @@ public class Load extends BasicGameState {
         y = Mouse.getY();
         
         if(input.isKeyPressed(Input.KEY_ESCAPE)) sbg.enterState(0);
-        if(input.isMouseButtonDown(0) && (x > 555 && x < 750) && (y > 115 && y < 160)) sbg.enterState(2);
-        if(input.isMouseButtonDown(0) && (x > 555 && x < 750) && (y > 45 && y < 90)) sbg.enterState(0);
+        if(input.isMouseButtonDown(0) && (x > 100 && x < 300) && (y > 40 && y < 85)
+                && currentUsers < 10) sbg.enterState(2);
+        if(input.isMouseButtonDown(0) && (x > 325 && x < 525) && (y > 40 && y < 85)
+                && (currentUsers < 10 && currentUsers > 0)){
+            
+        } 
+        if(input.isMouseButtonDown(0) && (x > 550 && x < 750) && (y > 115 && y < 160)
+                && currentUsers < 10){
+            sbg.enterState(3);
+        } 
+        if(input.isMouseButtonDown(0) && (x > 550 && x < 750) && (y > 45 && y < 90)) sbg.enterState(0);
     }
     @Override
     public int getID() { return 1; }
+    public int getMaxUsers() { return maxUsers; }
+    public int getCurrentUsers() { return currentUsers; }
 }

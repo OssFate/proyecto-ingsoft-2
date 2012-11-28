@@ -28,10 +28,10 @@ public class Credits extends BasicGameState{
         x = Mouse.getX();
         y = Mouse.getY();
         
-        if(input.isKeyPressed(Input.KEY_ESCAPE)) sbg.enterState(0);
-        if(input.isMouseButtonDown(0) && (x > 550 && x < 750) && (y > 45 && y < 90)) sbg.enterState(0);
+        if(input.isKeyPressed(Input.KEY_ESCAPE) || input.isMouseButtonDown(0)
+                && (x > 550 && x < 750) && (y > 45 && y < 90)) sbg.enterState(0);
     }
     
-    public int getID(){ return 3; }
+    public int getID(){ return 4; }
     
 }

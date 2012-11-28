@@ -36,7 +36,7 @@ public class Menu extends BasicGameState{
         if((xMCursor > 315 && xMCursor < 485) && (yMCursor > 200 && yMCursor < 230) && 
                 input.isMouseButtonDown(0)) sbg.enterState(1);
         if((xMCursor > 345 && xMCursor < 455) && (yMCursor > 150 && yMCursor < 180) && 
-                input.isMouseButtonDown(0)) sbg.enterState(3);
+                input.isMouseButtonDown(0)) sbg.enterState(4);
         if((xMCursor > 370 && xMCursor < 430) && (yMCursor > 100 && yMCursor < 125) && 
                 input.isMouseButtonDown(0)) System.exit(0);
     }

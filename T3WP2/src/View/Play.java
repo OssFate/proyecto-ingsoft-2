@@ -74,7 +74,7 @@ public class Play extends BasicGameState{
             mouse.setIdle(false);
         }
         
-        if (input.isKeyDown(Input.KEY_Z)){
+        if (input.isKeyDown(Input.KEY_Z) || input.isMouseButtonDown(0)){
             mouse.setIdle(false);
             mouse.setAttacking(true);
         }
@@ -98,5 +98,5 @@ public class Play extends BasicGameState{
         }
     }
     
-    public int getID(){ return 2; }
+    public int getID(){ return 3; }
 }

@@ -12,7 +12,7 @@ public class Play extends BasicGameState{
     
     float bgX = 0;
     float bgY = 0;
-    GameCharacter mouse;
+    GameCharacter gameChar;
     double health;
     float xMouse = 100;
     float yMouse = 250;
@@ -27,7 +27,6 @@ public class Play extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         health = 100;
-        mouse = new GameCharacter(health, xMouse, yMouse);
         bg = new Image("res/Bg1.jpg");
         pause = new Image("res/pause.png");
         //Image[] mouse = {new Image("res/mouse.png")};
@@ -37,8 +36,8 @@ public class Play extends BasicGameState{
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         bg.draw(bgX, bgY);
-        mouse.drawHealth(g);
-        mouse.draw(gc);
+        gameChar.drawHealth(g);
+        gameChar.draw(gc);
         if(quit == true){
             pause.draw(200,200);
             if(quit == false){
@@ -49,34 +48,34 @@ public class Play extends BasicGameState{
     
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
         Input input = gc.getInput();
-        mouse.setIdle(true);
-        mouse.setAttacking(false);
+        gameChar.setIdle(true);
+        gameChar.setAttacking(false);
         if((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
                 && bgY < 170){ 
             bgY += delta * .1f;
-            mouse.setIdle(false);
+            gameChar.setIdle(false);
         }
         if((input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
                 && bgY > -222){
             bgY -= delta * .1f;           
-            mouse.setIdle(false);
+            gameChar.setIdle(false);
         }
         if((input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A))
                 && bgX < 144){ 
             bgX += delta *.1f;
-            mouse.setFacingRight(false);
-            mouse.setIdle(false);
+            gameChar.setFacingRight(false);
+            gameChar.setIdle(false);
         }
         if((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
                 && bgX > -765){ 
             bgX -= delta * .1f;
-            mouse.setFacingRight(true);
-            mouse.setIdle(false);
+            gameChar.setFacingRight(true);
+            gameChar.setIdle(false);
         }
         
         if (input.isKeyDown(Input.KEY_Z) || input.isMouseButtonDown(0)){
-            mouse.setIdle(false);
-            mouse.setAttacking(true);
+            gameChar.setIdle(false);
+            gameChar.setAttacking(true);
         }
         
         if(input.isKeyDown(Input.KEY_ESCAPE)) quit = true;
@@ -99,4 +98,8 @@ public class Play extends BasicGameState{
     }
     
     public int getID(){ return 3; }
+    
+    public void setGameChar(GameCharacter g){
+        gameChar=g;
+    }
 }

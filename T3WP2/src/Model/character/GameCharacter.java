@@ -15,33 +15,36 @@ import org.newdawn.slick.SlickException;
  *
  * @author usuarios
  */
-public class GameCharacter {
-    private double health;
+public abstract class GameCharacter {
     
-    private Image[] movingRight;
-    private Image[] movingLeft;
-    private Image[] attackRight;
-    private Image[] attackLeft;
+    protected double health;
+    protected double curhealth;
     
-    private Animation current;
+    protected Image[] movingRight;
+    protected Image[] movingLeft;
+    protected Image[] attackRight;
+    protected Image[] attackLeft;
     
-    private Animation left;
-    private Animation right;
+    protected Animation current;
     
-    private Animation idleRight;
-    private Animation idleLeft;
+    protected Animation left;
+    protected Animation right;
     
-    private Animation aRight;
-    private Animation aLeft;
+    protected Animation idleRight;
+    protected Animation idleLeft;
     
-    private boolean isIdle = true;
-    private boolean facingRight = true;    
-    private boolean attacking = false;
+    protected Animation aRight;
+    protected Animation aLeft;
     
-    private float x;
-    private float y;
+    protected boolean isIdle = true;
+    protected boolean facingRight = true;    
+    protected boolean attacking = false;
+    
+    protected float x;
+    protected float y;
     
     public GameCharacter(double health, float x, float y) throws SlickException{
+        
         this.health = health;
         this.x = x;
         this.y = y;
@@ -148,15 +151,13 @@ public class GameCharacter {
     public void drawHealth(Graphics g){
         g.setColor(Color.black);
         g.drawString("Health:", 11, 11);
-        g.drawRect(80, 10, 400, 20);
+        g.drawRoundRect(80, 10, 400, 20,4);
         g.setColor(Color.red);
-        float percenthealth = (float) (health/100);
-        g.fillRect(80, 10, 400*percenthealth , 20);
+        float percenthealth = (float) (curhealth/health);
+        g.fillRoundRect(80, 10, 400*percenthealth , 20,4);
         g.setColor(Color.white);
-        g.drawString( (int)(percenthealth*100)+"/100", 240, 11);
+        g.drawString( (int)(percenthealth*100)+"/"+health, 240, 11);
     }
-
-    public double getLife() { return health; }
     //public Weapon[] getWeapons() { return weapons; }
     //public boolean isEnemy() { return isEnemy; }
 }

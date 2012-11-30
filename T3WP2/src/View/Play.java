@@ -14,6 +14,7 @@ import org.newdawn.slick.state.*;
 public class Play extends BasicGameState implements Observable{
     
     int score = 0;
+    float currentSpeed = 0;
     Sound sound;
     float bgX = 0;
     float bgY = 0;
@@ -39,11 +40,9 @@ public class Play extends BasicGameState implements Observable{
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         
         
-        bg = new Image("res/bg2 - resized.png");
+        bg = new Image("res/bgFixed.png");
         pause = new Image("res/pause.png");
         sound = new Sound("res/1.wav");
-        //Image[] mouse = {new Image("res/mouse.png")};
-        //anim = new Animation(mouse, duration, false);
         
         ///////////////////////////////////////
         changed = false;
@@ -76,6 +75,7 @@ public class Play extends BasicGameState implements Observable{
         }
     }
     
+    @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
         
         if(!playSound){
@@ -87,17 +87,25 @@ public class Play extends BasicGameState implements Observable{
         gameChar.setIdle(true);
         gameChar.setAttacking(false);
         
-        if(input.isKeyDown(Input.KEY_ESCAPE)) quit = true;
+        if(input.isKeyDown(Input.KEY_ESCAPE)) {
+            quit = true;
+        }
         
         if(quit == true){
             //if(input.isKeyDown(Input.KEY_DOWN) && bgY > -222 && !gameChar.getAttacking()) bgY += delta * gameChar.getSpeed();
             //if(input.isKeyDown(Input.KEY_UP) && bgY < 170 && !gameChar.getAttacking()) bgY -= delta *  gameChar.getSpeed();
             gameChar.setIdle(true);
             
-            if(input.isKeyDown(Input.KEY_RIGHT) && bgX > -765 && !gameChar.getAttacking()) bgX += delta *  gameChar.getSpeed();
-            if(input.isKeyDown(Input.KEY_LEFT) && bgX < 144 && !gameChar.getAttacking()) bgX -= delta * gameChar.getSpeed();
+            if(input.isKeyDown(Input.KEY_RIGHT) && bgX > -765 && !gameChar.getAttacking()) {
+                bgX += delta *  gameChar.getSpeed();
+            }
+            if(input.isKeyDown(Input.KEY_LEFT) && bgX < 144 && !gameChar.getAttacking()) {
+                bgX -= delta * gameChar.getSpeed();
+            }
             
-            if(input.isKeyDown(Input.KEY_R)) quit = false;
+            if(input.isKeyDown(Input.KEY_R)) {
+                quit = false;
+            }
             if(input.isKeyDown(Input.KEY_M)){
                 quit = false;
                 bgX = 0;
@@ -109,7 +117,9 @@ public class Play extends BasicGameState implements Observable{
                 sound.stop();
                 sbg.enterState(0);
             }
-            if(input.isKeyDown(Input.KEY_Q)) System.exit(0);
+            if(input.isKeyDown(Input.KEY_Q)) {
+                System.exit(0);
+            }
         }
         
         if(!quit){
@@ -124,15 +134,19 @@ public class Play extends BasicGameState implements Observable{
             gameChar.setFacingRight(false);
             gameChar.setIdle(false);
         }
-        if(((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) && !gameChar.getAttacking())
-                && bgX > -4200){ 
+        if((input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) && !gameChar.getAttacking())
+        { 
             bgX -= delta * gameChar.getSpeed();
-            if(bgX < -4200) bgX = 0;
+            if(bgX < -1616) {
+                bgX = -125;
+            }
             gameChar.setFacingRight(true);
             gameChar.setIdle(false);
         }
         
-        if ((input.isKeyPressed(Input.KEY_Z) || input.isMousePressed(0)) && quit==false) gameChar.getSound().play();
+        if ((input.isKeyPressed(Input.KEY_Z) || input.isMousePressed(0)) && quit==false) {
+                gameChar.getSound().play();
+            }
         
         ///////////////////////////////////////////////////////////////
 	
@@ -142,7 +156,7 @@ public class Play extends BasicGameState implements Observable{
         }
 
 	if((Math.random()*250) < 1){
-            enemyList.add(Rat.newEnemy(900, 370));
+            enemyList.add(Rat.newEnemy(900, 360));
             enemyList.get(enemyList.size() - 1).setIdle(false);
             enemyList.get(enemyList.size() - 1).setFacingRight(false);
             addObserver(enemyList.get(enemyList.size() - 1));
@@ -160,20 +174,30 @@ public class Play extends BasicGameState implements Observable{
             addObserver(enemyList.get(enemyList.size() - 1));
 	}
         if((Math.random()*400) < 1){
-            enemyList.add(Pig.newEnemy(900, 360));
+            enemyList.add(Pig.newEnemy(900, 320));
             enemyList.get(enemyList.size() - 1).setIdle(false);
             enemyList.get(enemyList.size() - 1).setFacingRight(false);
             addObserver(enemyList.get(enemyList.size() - 1));
 	}
         if((Math.random()*1000) < 1){
-            enemyList.add(Alligator.newEnemy(900, 150));
+            enemyList.add(Alligator.newEnemy(900, 140));
             enemyList.get(enemyList.size() - 1).setIdle(false);
             enemyList.get(enemyList.size() - 1).setFacingRight(false);
             addObserver(enemyList.get(enemyList.size() - 1));
 	}
         
         for (GameCharacter b : enemyList) {
-            b.move(delta);
+            
+            if(gameChar.getIdle() || gameChar.getAttacking()) {
+                currentSpeed = 0;
+            }
+            else{
+                currentSpeed = gameChar.getSpeed();
+                if(!gameChar.getFacing()) {
+                    currentSpeed *= -1;
+                }
+            }
+            b.move(delta,currentSpeed);
         }
         
         for(int i = 0; i < enemyList.size(); i++){
@@ -185,12 +209,12 @@ public class Play extends BasicGameState implements Observable{
         }
     }
     }
+    @Override
     public int getID(){ return 3; }
     
     public void setGameChar(GameCharacter g){
         gameChar=g;
         addObserver(gameChar);
-        //System.out.println(gameChar);
     }
     
     //////////////////////////////////////////
@@ -223,7 +247,6 @@ public class Play extends BasicGameState implements Observable{
     
     private boolean colision() {
         for(int j = 1; j < Observers.size(); j++){
-            System.out.println(Observers.get(0).getBox().colide(Observers.get(j).getBox()));
                 if(Observers.get(0).getBox().colide(Observers.get(j).getBox())){
                     Observers.get(0).setColide(true);
 		    Observers.get(j).setColide(true);

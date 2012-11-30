@@ -89,7 +89,9 @@ public abstract class GameCharacter implements Observer{
         return attacking;
     }
     
-    
+    public boolean getIdle(){
+        return this.isIdle;
+    }
 
     public float getX() {
         return x;
@@ -126,6 +128,7 @@ public abstract class GameCharacter implements Observer{
         return speed;
     }
     
+    
     ////////////////////////////////////////////////
     
     @Override
@@ -153,15 +156,15 @@ public abstract class GameCharacter implements Observer{
         return destroy;
     }
     
-    public void move(int delta){
+    public void move(int delta, float charSpeed){
         if(facingRight){
             current = right;
-            x += speed*delta;
-            this.getBox().getHitBox()[0] += speed*delta;
+            x += (speed+charSpeed)*delta;
+            this.getBox().getHitBox()[0] += (speed+charSpeed)*delta;;
         }else{
             current = left;
-            x -= speed*delta;
-            this.getBox().getHitBox()[0] -= speed*delta;
+            x -= (speed+charSpeed)*delta;
+            this.getBox().getHitBox()[0] -= (speed+charSpeed)*delta;
         }
         current.draw(x, y);
     }

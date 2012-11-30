@@ -40,7 +40,7 @@ public class Play extends BasicGameState implements Observable{
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         
         
-        bg = new Image("res/bgFixed.png");
+        bg = new Image("res/bgFixed.jpg");
         pause = new Image("res/pause.png");
         sound = new Sound("res/1.wav");
         
@@ -95,13 +95,6 @@ public class Play extends BasicGameState implements Observable{
             //if(input.isKeyDown(Input.KEY_DOWN) && bgY > -222 && !gameChar.getAttacking()) bgY += delta * gameChar.getSpeed();
             //if(input.isKeyDown(Input.KEY_UP) && bgY < 170 && !gameChar.getAttacking()) bgY -= delta *  gameChar.getSpeed();
             gameChar.setIdle(true);
-            
-            if(input.isKeyDown(Input.KEY_RIGHT) && bgX > -765 && !gameChar.getAttacking()) {
-                bgX += delta *  gameChar.getSpeed();
-            }
-            if(input.isKeyDown(Input.KEY_LEFT) && bgX < 144 && !gameChar.getAttacking()) {
-                bgX -= delta * gameChar.getSpeed();
-            }
             
             if(input.isKeyDown(Input.KEY_R)) {
                 quit = false;
